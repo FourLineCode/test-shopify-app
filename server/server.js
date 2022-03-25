@@ -6,6 +6,7 @@ import "isomorphic-fetch";
 import Koa from "koa";
 import Router from "koa-router";
 import next from "next";
+import apiRouter from "../api/router";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -102,6 +103,9 @@ app.prepare().then(async () => {
       await handleRequest(ctx);
     }
   });
+
+  // Custom internel api routes
+  server.use(apiRouter.routes());
 
   server.use(router.allowedMethods());
   server.use(router.routes());
