@@ -41,7 +41,10 @@ export function Layout() {
         open={resoursePickerOpen}
         resourceType="Product"
         onCancel={() => setResoursePickerOpen(false)}
-        onSelection={(items) => console.log(items.selection)}
+        onSelection={(items) => {
+          console.log(items.selection);
+          setResoursePickerOpen(false);
+        }}
       />
       <Card sectioned>
         <Stack alignment="center" distribution="equalSpacing">
