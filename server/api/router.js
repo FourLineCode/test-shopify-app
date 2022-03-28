@@ -11,7 +11,7 @@ const router = Router({ prefix: "/api/v1" });
 router.use(defaultErrorHandler());
 router.use(logger());
 
-router.use(verifyRequest({ returnHeader: true }));
+router.use(verifyRequest());
 
 router.get("/hello", (ctx) => {
   response.success(ctx, { message: "This is message from Internal API" });

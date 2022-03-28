@@ -15,11 +15,13 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+// Use LocalTunnel URL if available, otherwise use ngrok by default
+const HOST = process.env.HOSTLT || process.env.HOST;
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
   API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
   SCOPES: process.env.SCOPES.split(","),
-  HOST_NAME: process.env.HOST.replace(/https:\/\/|\/$/g, ""),
+  HOST_NAME: HOST.replace(/https:\/\/|\/$/g, ""),
   API_VERSION: ApiVersion.January22,
   IS_EMBEDDED_APP: true,
   SESSION_STORAGE: new Shopify.Session.CustomSessionStorage(
