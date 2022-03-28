@@ -22,13 +22,13 @@ export function Home() {
     <main className="w-full max-w-4xl py-2 mx-auto">
       <Card sectioned>
         <Stack alignment="center" distribution="equalSpacing">
-          <p>Fetch all products from internal api</p>
+          <p className="text-lg font-semibold">Fetch all products from internal api</p>
           <Button outline loading={loading} onClick={fetchData}>
             Get products
           </Button>
         </Stack>
       </Card>
-      {products.length > 0 && (
+      {products.length > 0 ? (
         <div className="mt-2 space-y-2">
           <h2 className="text-xl font-semibold">Shop Products</h2>
           {products.map(({ id, title }) => (
@@ -42,6 +42,10 @@ export function Home() {
               </h3>
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center px-6 py-16 text-2xl font-bold text-gray-600">
+          No Products
         </div>
       )}
       <Link passHref href="/about">
