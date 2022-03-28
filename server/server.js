@@ -7,13 +7,17 @@ import Koa from "koa";
 import Router from "koa-router";
 import next from "next";
 import apiRouter from "../api/router";
+import {
+  deleteCallback,
+  loadAllSessions,
+  loadCallback,
+  storeCallback,
+} from "./session/callbacks";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
 const dev = process.env.NODE_ENV !== "production";
-const app = next({
-  dev,
-});
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 Shopify.Context.initialize({
@@ -21,29 +25,42 @@ Shopify.Context.initialize({
   API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
   SCOPES: process.env.SCOPES.split(","),
   HOST_NAME: process.env.HOST.replace(/https:\/\/|\/$/g, ""),
-  API_VERSION: ApiVersion.October20,
+  API_VERSION: ApiVersion.January22,
   IS_EMBEDDED_APP: true,
   // This should be replaced with your preferred storage strategy
-  SESSION_STORAGE: new Shopify.Session.MemorySessionStorage(),
+  SESSION_STORAGE: new Shopify.Session.CustomSessionStorage(
+    storeCallback,
+    loadCallback,
+    deleteCallback
+  ),
 });
 
 // Storing the currently active shops in memory will force them to re-login when your server restarts. You should
 // persist this object in your app.
 const ACTIVE_SHOPIFY_SHOPS = {};
+(async () => {
+  const activeSessions = await loadAllSessions();
+  activeSessions.forEach((session) => {
+    if (session?.shop && session?.scope)
+      ACTIVE_SHOPIFY_SHOPS[session.shop] = session.scope;
+  });
+})();
 
 Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
   path: "/webhooks",
-  webhookHandler: async (topic, shop, body) =>
+  webhookHandler: async (_topic, shop, _body) =>
     delete ACTIVE_SHOPIFY_SHOPS[shop],
 });
 
 app.prepare().then(async () => {
   const server = new Koa();
   const router = new Router();
+
   server.keys = [Shopify.Context.API_SECRET_KEY];
+
   server.use(
     createShopifyAuth({
-      async afterAuth(ctx) {
+      afterAuth: async (ctx) => {
         // Access token and shop available in ctx.state.shopify
         const { shop, accessToken, scope } = ctx.state.shopify;
         const host = ctx.query.host;
@@ -104,7 +121,7 @@ app.prepare().then(async () => {
     }
   });
 
-  // Custom internel api routes
+  // Custom internal api routes
   server.use(apiRouter.routes());
 
   server.use(router.allowedMethods());

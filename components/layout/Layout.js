@@ -25,7 +25,7 @@ export function Layout() {
 
   const fetchData = async () => {
     setLoading(true);
-    const res = await authFetch("/api/v1/hello");
+    const res = await authFetch("/api/v1/products");
     const data = await res.json();
     setApiData(data);
     setLoading(false);
@@ -62,6 +62,7 @@ export function Layout() {
           </Button>
         </Stack>
         <Modal
+          large
           open={modalOpen}
           onClose={() => setModalOpen(false)}
           title="Response from internal API"
