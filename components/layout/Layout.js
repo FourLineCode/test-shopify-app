@@ -41,9 +41,7 @@ export function Layout() {
         content: "Choose Items",
         onAction: () => setResoursePickerOpen(true),
       }}
-      secondaryActions={[
-        { content: "About", onAction: () => router.push("/about") },
-      ]}
+      secondaryActions={[{ content: "About", onAction: () => router.push("/about") }]}
     >
       <ResourcePicker
         open={resoursePickerOpen}
