@@ -49,7 +49,7 @@ app.prepare().then(async () => {
 
   server.keys = [Shopify.Context.API_SECRET_KEY];
 
-  server.use(defaultErrorHandler);
+  server.use(defaultErrorHandler());
 
   server.use(
     createShopifyAuth({
