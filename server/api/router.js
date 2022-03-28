@@ -1,10 +1,15 @@
 import { verifyRequest } from "@shopify/koa-shopify-auth";
 import Shopify from "@shopify/shopify-api";
+import logger from "koa-logger";
 import Router from "koa-router";
 import { getAllProducts } from "../controllers/products";
+import defaultErrorHandler from "../middlewares/errorHandler";
 import { response } from "../utils/response";
 
 const router = Router({ prefix: "/api/v1" });
+
+router.use(defaultErrorHandler());
+router.use(logger());
 
 router.use(verifyRequest({ returnHeader: true }));
 

@@ -7,7 +7,6 @@ import Koa from "koa";
 import Router from "koa-router";
 import next from "next";
 import apiRouter from "./api/router";
-import defaultErrorHandler from "./middlewares/errorHandler";
 import { deleteCallback, loadAllSessions, loadCallback, storeCallback } from "./session/callbacks";
 
 dotenv.config();
@@ -48,8 +47,6 @@ app.prepare().then(async () => {
   const router = new Router();
 
   server.keys = [Shopify.Context.API_SECRET_KEY];
-
-  server.use(defaultErrorHandler());
 
   server.use(
     createShopifyAuth({
