@@ -2,7 +2,6 @@ import "@babel/polyfill";
 import createShopifyAuth, { verifyRequest } from "@shopify/koa-shopify-auth";
 import Shopify, { ApiVersion } from "@shopify/shopify-api";
 import dotenv from "dotenv";
-import "isomorphic-fetch";
 import Koa from "koa";
 import Router from "koa-router";
 import next from "next";

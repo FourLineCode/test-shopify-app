@@ -1,9 +1,15 @@
-const { parsed: localEnv } = require("dotenv").config();
+require("dotenv").config();
 
 const webpack = require("webpack");
 const apiKey = JSON.stringify(process.env.SHOPIFY_API_KEY);
 
 module.exports = {
+  reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  swcMinify: true,
+  // This config adds API_KEY definition in _app.js
   webpack: (config) => {
     const env = { API_KEY: apiKey };
     config.plugins.push(new webpack.DefinePlugin(env));

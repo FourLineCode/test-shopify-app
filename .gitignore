@@ -1,22 +1,9 @@
-# Environment Configuration
-.env
-
-# Dependency directory
 node_modules
-
-# Test coverage directory
+.env
 coverage
-
-# Ignore Apple macOS Desktop Services Store
 .DS_Store
-
-# Logs
 logs
 *.log
-
-# ngrok tunnel file
 config/tunnel.pid
-
-# next build output
 .next/
 sessions.json
