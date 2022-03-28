@@ -1,13 +1,5 @@
-import { Link as PolarisLink } from "@shopify/polaris";
-import Link from "next/link";
+import { About } from "../components/About";
 
-export default function About() {
-  return (
-    <div className="flex flex-col justify-center">
-      <div className="text-3xl font-semibold text-center">About Page</div>
-      <Link href="/" passHref as={<PolarisLink />}>
-        <div className="text-center text-blue-500 cursor-pointer hover:underline">Go Back</div>
-      </Link>
-    </div>
-  );
+export default function AboutPage() {
+  return <About />;
 }

@@ -2,7 +2,7 @@ import { response } from "../utils/response";
 
 const DEV = process.env.NODE_ENV !== "production";
 
-export default function defaultErrorHandler() {
+export function defaultErrorHandler() {
   return async (ctx, next) => {
     try {
       await next();
