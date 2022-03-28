@@ -6,7 +6,7 @@ import "isomorphic-fetch";
 import Koa from "koa";
 import Router from "koa-router";
 import next from "next";
-import apiRouter from "../api/router";
+import apiRouter from "./api/router";
 import {
   deleteCallback,
   loadAllSessions,

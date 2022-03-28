@@ -2,7 +2,7 @@ import { verifyRequest } from "@shopify/koa-shopify-auth";
 import Shopify from "@shopify/shopify-api";
 import { gql } from "apollo-boost";
 import Router from "koa-router";
-import { createClient } from "../server/handlers/client";
+import { createClient } from "../handlers/client";
 
 const router = Router({ prefix: "/api/v1" });
 
