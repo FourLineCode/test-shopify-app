@@ -9,13 +9,16 @@ import apiRouter from "./routers";
 import { deleteCallback, loadAllSessions, loadCallback, storeCallback } from "./session/callbacks";
 
 dotenv.config();
-const port = parseInt(process.env.PORT, 10) || 8081;
-const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
+
+const DEV = process.env.NODE_ENV !== "production";
+const PORT = parseInt(process.env.PORT, 10) || 8081;
+// Localhost tunnel URL
+const HOST = process.env.HOST;
+
+// Next app handler
+const app = next({ dev: DEV });
 const handle = app.getRequestHandler();
 
-// Use LocalTunnel URL if available, otherwise use ngrok by default
-const HOST = process.env.HOSTLT || process.env.HOST;
 Shopify.Context.initialize({
   API_KEY: process.env.SHOPIFY_API_KEY,
   API_SECRET_KEY: process.env.SHOPIFY_API_SECRET,
@@ -30,13 +33,8 @@ Shopify.Context.initialize({
   ),
 });
 
+// In memory map of all currently authenticated shops
 const ACTIVE_SHOPIFY_SHOPS = {};
-(async () => {
-  const activeSessions = await loadAllSessions();
-  activeSessions.forEach((session) => {
-    if (session?.shop && session?.scope) ACTIVE_SHOPIFY_SHOPS[session.shop] = session.scope;
-  });
-})();
 
 Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
   path: "/webhooks",
@@ -44,6 +42,14 @@ Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
 });
 
 app.prepare().then(async () => {
+  // Load all the currently active sessions from "~/sessions.json" into memory
+  const activeSessions = await loadAllSessions();
+  activeSessions.forEach((session) => {
+    if (session?.shop && session?.scope) {
+      ACTIVE_SHOPIFY_SHOPS[session.shop] = session.scope;
+    }
+  });
+
   const server = new Koa();
   const router = new Router();
 
@@ -104,13 +110,14 @@ app.prepare().then(async () => {
     }
   });
 
-  // Custom internal api routes
+  // Bevy Giveaway App internal api routes
   server.use(apiRouter.allowedMethods());
   server.use(apiRouter.routes());
 
   server.use(router.allowedMethods());
   server.use(router.routes());
-  server.listen(port, () => {
-    console.log(`> Ready on http://localhost:${port}`);
+
+  server.listen(PORT, () => {
+    console.log(`> Ready on http://localhost:${PORT}`);
   });
 });

@@ -1,7 +1,10 @@
+import { useAppBridge } from "@shopify/app-bridge-react";
 import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
 
-export default function userLoggedInFetch(app) {
+// This hook will provide a wrapper around the browser fetch api with shopify-app-bridge authentication
+export function useAuthenticatedFetch() {
+  const app = useAppBridge();
   const fetchFunction = authenticatedFetch(app);
 
   return async (uri, options) => {

@@ -1,3 +1,4 @@
+// Utility functions to return koa response
 export const response = {
   error: (ctx, code, message) => {
     ctx.statusCode = code;

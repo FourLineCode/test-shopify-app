@@ -5,14 +5,15 @@ import translations from "@shopify/polaris/locales/en.json";
 import ApolloClient from "apollo-boost";
 import App from "next/app";
 import { ApolloProvider } from "react-apollo";
-import userLoggedInFetch from "../hooks/userLoggedInFetch";
+import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
 import "../styles/tailwind.css";
 
 function MyProvider(props) {
   const app = useAppBridge();
+  const authenticatedFetch = useAuthenticatedFetch(app);
 
   const client = new ApolloClient({
-    fetch: userLoggedInFetch(app),
+    fetch: authenticatedFetch,
     fetchOptions: {
       credentials: "include",
     },
@@ -30,6 +31,7 @@ function MyProvider(props) {
 class MyApp extends App {
   render() {
     const { Component, pageProps, host } = this.props;
+
     return (
       <AppProvider i18n={translations}>
         <Provider

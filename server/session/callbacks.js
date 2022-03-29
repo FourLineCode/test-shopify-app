@@ -1,5 +1,11 @@
 import fs from "fs";
 
+/*
+  NOTE: This module holds the implementation of CustomSessionStorage for the Shopify instance in `server.js`
+  This is only a temporary solution for development purposes. This implementation might change in the future.
+*/
+
+// Local json filename to store currently authenticated shops
 const fileName = "./sessions.json";
 
 export async function storeCallback(session) {
