@@ -20,11 +20,11 @@ export async function storeCallback(session) {
     });
     const sessions = JSON.parse(content);
     sessions.push(session);
-    await fs.promises.writeFile(fileName, JSON.stringify(sessions), {
+    await fs.promises.writeFile(fileName, JSON.stringify(sessions, null, 2), {
       encoding: "utf-8",
     });
   } else {
-    await fs.promises.writeFile(fileName, JSON.stringify([session]), {
+    await fs.promises.writeFile(fileName, JSON.stringify([session], null, 2), {
       encoding: "utf-8",
     });
   }
@@ -60,7 +60,7 @@ export async function deleteCallback(id) {
     });
     const sessions = JSON.parse(content);
     const newSessions = sessions.filter((each) => each.id !== id);
-    await fs.promises.writeFile(fileName, JSON.stringify(newSessions), {
+    await fs.promises.writeFile(fileName, JSON.stringify(newSessions, null, 2), {
       encoding: "utf-8",
     });
   }
@@ -122,7 +122,7 @@ export async function deleteSessionByShop(shop) {
       });
       const sessions = JSON.parse(content);
       const newSessions = sessions.filter((each) => each.shop !== shop);
-      await fs.promises.writeFile(fileName, JSON.stringify(newSessions), {
+      await fs.promises.writeFile(fileName, JSON.stringify(newSessions, null, 2), {
         encoding: "utf-8",
       });
     }
