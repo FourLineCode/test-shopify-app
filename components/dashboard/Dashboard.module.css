@@ -1,0 +1,12 @@
+.main {
+  padding-top: 1rem;
+  max-width: 75%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.heading {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
