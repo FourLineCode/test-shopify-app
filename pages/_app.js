@@ -6,6 +6,7 @@ import ApolloClient from "apollo-boost";
 import App from "next/app";
 import { ApolloProvider } from "react-apollo";
 import { useAuthenticatedFetch } from "../hooks/useAuthenticatedFetch";
+import "../styles/index.css";
 
 function MyProvider(props) {
   const app = useAppBridge();
